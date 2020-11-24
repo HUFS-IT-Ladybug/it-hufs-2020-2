@@ -1,0 +1,79 @@
+import os
+from collections import defaultdict
+import requests
+from bs4 import BeautifulSoup
+import json
+
+
+def setting_data():
+    targets = {  # crops: [pests1, pests2, pests3, pests4, ... ]
+        '벼': ['목도열병', '벼멸구', '세균벼알마름병', '벼물바구미', '이삭누룩병', '벼물가파리', '잎집무늬마름병', '벼줄기굴파리', '키다리병', '애멸구', '흰잎마름병', '이화명나방',
+              '먹노린재', '혹명나방'],
+        '고추': ['세균점무늬병', '꽃노랑총채벌레', '역병', '담배나방', '탄저병', '목화진딧물', '흰가루병', '흰비단병', '작은뿌리파리'],
+        '배추': ['노균병', '배추좀나방', '무름병', '배추벼룩잎벌레', '뿌리혹병', '무사마귀병', '무테두리진딧물'],
+        '수박': ['덩굴마름병', '목화바둑명나방', '점박이응애', '파밤나방'],
+        '참외': ['아메리카잎굴파리', '목화진딧물', '뿌리혹선충'],
+        '오이': ['갈색무늬병', '목화바둑명나방', '검은별무늬병', '균핵병', '잿빛곰팡이병', '오이총채벌레', '흰가루병', '온실가루이'],
+        '양파': ['고자리파리', '노균병', '흑색썩음균핵병'],
+        '파': ['고자리파리', '파밤나방', '작은뿌리파리', '파좀나방', '파굴파리', '파총채벌레', '검은무늬병', '녹병', '흑색썩음균핵병'],
+        '토마토': ['역병', '아메리카잎굴파리', '잎곰팡이병', '온실가루이', '잿빛곰팡이병', '뿌리혹선충'],
+        '딸기': ['잿빛곰팡이병', '목화진딧물', '탄저병', '작은뿌리파리', '흰가루병', '점박이응애', '꽃노랑총채벌레', '파밤나방', '눈마름병', '세균모무늬병', '역병'],
+        '파프리카': ['목화진딧물', '복숭아혹진딧물', '점박이응애', '작은뿌리파리', '붉은썩음병'],
+        '인삼': ['모밭', '모잘록병', '역병', '잿빛곰팡이병', '점무늬병', '탄저병', '잘록병'],
+        '사과': ['갈색무늬병', '복숭아순나방', '검은별무늬병', '복숭아심식나방', '겹무늬썩음병', '사과굴나방', '부란병', '사과응애', '붉은별무늬병', '사과혹진딧물', '점무늬낙엽병',
+               '은무늬굴나방', '탄저병', '잎말이나방', '점박이응애', '조팝나무진딧물'],
+        '배': ['검은별무늬병', '꼬마배나무이', '붉은별무늬병', '복숭아순나방', '가루깍지벌레', '점박이응애', '가루깍지벌레', '조팝나무진딧물'],
+        '감': ['감관총채벌레', '감꼭지나방', '점박이응애', '주머니깍지벌레', '둥근무늬낙엽병', '모무늬낙엽병', '잿빛곰팡이병', '탄저병', '흰가루병'],
+        '감귤': ['흑점병', '검은점무늬병', '궤양병', '귤굴나방', '더뎅이병', '귤응애', '잿빛곰팡이병', '꽃노랑총채벌레', '조팝나무진딧물'],
+        '복숭아': ['세균성구멍병', '복숭아순나방', '잎오갈병', '복숭아심식나방', '잿빛무늬병', '복숭아유리나방', '탄저병', '복숭아혹진딧물', '복숭아굴나방', '점박이응애'],
+        '포도': ['갈색무늬병', '잿빛곰팡이병', '노균병', '탄저병', '새눈무늬병', '포도쌍점애매미충']
+    }
+    pest_dic = {}  # { pest1: [crop1, crop2, ...], pest2: [crop1, crop2, ...], ... }
+    for key, val in targets.items():  # crops, [pests1, pests2, ...]
+        for v in val:
+            if v not in pest_dic:
+                pest_dic[v] = []
+            if key not in pest_dic[v]:
+                pest_dic[v] = pest_dic[v] + [key]
+    return pest_dic
+
+
+class searchPest():
+    def __init__(self):
+        self.base_url_front = 'http://ncpms.rda.go.kr/npmsAPI/api/xmlSample03.jsp'
+        self.base_url_back = '&apiKey=20122ab498a283da3f66d132199bd5ec4280&serviceCode=SVC03&serviceCodeDetail=SVC07' \
+                             '&displayCount=10&startPoint=1&insectKey=# '
+        self.json_data = setting_data()
+
+    def check_result(self):
+        res = {}
+        for pest, crops in self.json_data.items():
+            for crop in crops:
+                req = requests.get(self.base_url_front + '?cropName=' + crop + '&insectKorName=' + pest + self.base_url_back)
+                soup = BeautifulSoup(req.content, "html.parser")
+                name = ""
+                species = ""
+                img_src = ""
+                for idx, tag in enumerate(soup.select('td')):
+                    if idx % 4 == 1:
+                        name = tag.get_text()
+                    elif idx % 4 == 2:
+                        species = tag.get_text()
+                    elif idx % 4 == 3:
+                        img_src = tag.img['src']
+                    elif idx is not 0:
+                        if not name:
+                            continue
+                        else:
+                            res.update({name: {'species': species, 'img_src': img_src, 'crop': crop}})
+                            name = ""
+                            species = ""
+                            img_src = ""
+        return res
+
+
+if __name__ == '__main__':
+    res = searchPest()
+    json_data = res.check_result()
+    with open("./data/final.json", "w+", encoding='UTF-8') as file:
+        json.dump(json_data, file, indent=4, sort_keys=True, ensure_ascii=False)

@@ -1,0 +1,27 @@
+{
+    "배추좀나방": {
+        "crop": "배추",
+        "img_src": "http://ncpms.rda.go.kr/npmsAPI/thumbnailViewer.mo?uploadSpec=npms&uploadSubDirectory=/photo/hlsct/&imageFileName=ZR1FJ0002E001[20110113150000000]_tmb.jpg",
+        "species": "xylostella"
+    },
+    "복숭아순나방": {
+        "crop": "사과",
+        "img_src": "http://ncpms.rda.go.kr/npmsAPI/thumbnailViewer.mo?uploadSpec=npms&uploadSubDirectory=/photo/hlsct/&imageFileName=ZR1FF0131E003[201010210000000]_tmb.jpg",
+        "species": "molesta"
+    },
+    "복숭아잎말이나방": {
+        "crop": "사과",
+        "img_src": "http://ncpms.rda.go.kr/npmsAPI/thumbnailViewer.mo?uploadSpec=npms&uploadSubDirectory=/photo/hlsct/&imageFileName=복숭아잎말이나방월동형성충[20161114133803896]_tmb.jpg",
+        "species": "fimbriana"
+    },
+    "사과무늬잎말이나방": {
+        "crop": "사과",
+        "img_src": "http://ncpms.rda.go.kr/npmsAPI/thumbnailViewer.mo?uploadSpec=npms&uploadSubDirectory=/photo/hlsct/&imageFileName=사과_사과무늬잎말이나방_애벌레[20151111104459377]_tmb.jpg",
+        "species": "breviplicanus"
+    },
+    "파총채벌레": {
+        "crop": "파",
+        "img_src": "http://ncpms.rda.go.kr/npmsAPI/thumbnailViewer.mo?uploadSpec=npms&uploadSubDirectory=/photo/hlsct/&imageFileName=파총채벌레 피해[20161117103644214]_tmb.jpg",
+        "species": "tabaci"
+    }
+}

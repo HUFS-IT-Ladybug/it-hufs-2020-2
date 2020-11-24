@@ -6,19 +6,19 @@ import json
 import re
 
 # get target tree pest encyclopedia
-def get_target_url(treePestList):
-    def hangul(text):
-        pattern = re.compile(r'\s+')
-        res = re.sub(pattern, '', text)
-        return res
-
-    for bug in treePestList:
-        base_url = 'https://terms.naver.com/search.nhn?query=' + bug + '&searchType=&dicType=&subject='
-        req = requests.get(base_url)
-        soup = BeautifulSoup(req.content, "html.parser")
-        candidates = soup.select('div.info_area > div.subject')[0]
-        test = candidates.get_text()
-        print(test)
+# def get_target_url(treePestList):
+#     def hangul(text):
+#         pattern = re.compile(r'\s+')
+#         res = re.sub(pattern, '', text)
+#         return res
+#
+#     for bug in treePestList:
+#         base_url = 'https://terms.naver.com/search.nhn?query=' + bug + '&searchType=&dicType=&subject='
+#         req = requests.get(base_url)
+#         soup = BeautifulSoup(req.content, "html.parser")
+#         candidates = soup.select('div.info_area > div.subject')[0]
+#         test = candidates.get_text()
+#         print(test)
 #        if candidates == bug:
 #            print(bug)
         #find(class_ = 'title').get_text()
@@ -41,17 +41,16 @@ def get_target_url(treePestList):
 
 # get target tree pest list
 def get_target_list():
-    cur_path = os.getcwd() + '\crawling\\target.txt'
-    file = open(cur_path, mode = 'r', encoding='utf-8')
+    with open('./data/pest_list.json', 'rt', encoding="utf-8") as json_file:
+        json_data = json.load(json_file, encoding='utf-8')
+    return json_data
 
-    treePestList = defaultdict(str)
-    for line in file:
-        treePestList[line.strip('\n')] = []
-    return treePestList
 
-treePestList = get_target_list()
+def check_target(target):
+
 
 if __name__ == '__main__':
-    treePestList = get_target_list()
+    # treePestList = get_target_list()
+    get_target_list()
     #treePestURLList = get_target_url(treePestList)
-    get_target_url(treePestList)
+    # get_target_url(treePestList)

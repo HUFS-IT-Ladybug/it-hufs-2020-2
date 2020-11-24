@@ -1,0 +1,33 @@
+/* drag & drop image - animation */
+@keyframes ani{
+	0%{transform:translate(0, 3px);}
+	100%{transform:translate(0, 10px);}
+}
+.floating-img {
+    animation:ani 0.25s infinite alternate; 
+    margin-bottom: 1vh; 
+}
+
+
+/* left container: upload img file */
+.file-upload-input {
+	position: absolute;
+	margin: AUTO;
+	padding: 0;
+	width: 10%;
+	height: 10%;
+	outline: none;
+	opacity: 0;
+	cursor: pointer;
+	display: none;
+}
+.file-upload-content {
+	display: none;
+}
+.file-upload-image {
+	max-height: 200px;
+	max-width: 200px;
+	margin: auto;
+	padding: 20px;
+}
+.image-dropping,

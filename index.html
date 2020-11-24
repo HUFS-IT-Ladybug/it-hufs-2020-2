@@ -1,118 +1,157 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
+<!--
+	Hielo by TEMPLATED
+	templated.co @templatedco
+	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
 <html>
 
 <head>
-    <link rel="stylesheet" href="index.css">
+	<title>Ladybug🐞</title> <!-- Replace icon to favicon.ico -->
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" href="assets/css/main.css" />
+	<link rel="stylesheet" href="assets/css/index.css" />
 </head>
 
 <body onload="init()">
-    <div class="wrap">
-        <div class="title">병충해 자가판독 AI 플랫폼</div>
 
-        <!-- Upload image file -->
-        <div class="left-container">
-            <script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-            <div class="file-upload">
-                <button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">Add Image</button>
+	<!-- Header -->
+	<header id="header" class="alt">
+		<div class="logo"><a href="index.html">병충해 자가판독 AI 플랫폼 <span>by 4조 서울여자들</span></a></div>
+	</header>
 
-                <div class="image-upload-wrap">
-                    <input class="file-upload-input" type='file' onchange="readURL(this);" accept="image/*" />
-                    <div class="drag-text">
-                        <img src="img/upload.svg" class="mt-5 pt-5 upload">
-                        <h5>Drag & drop a file <br>or select add Image</h5>
-                    </div>
-                </div>
-                <div class="file-upload-content">
-                    <img class="file-upload-image" id="face-image" src="#" alt="your image" />
-                    <div class="image-title-wrap">
-                        <button type="button" onclick="removeUpload()" class="remove-image">Remove
-                            <span class="image-title">Uploaded Image</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <button type="button" onclick="predict()">Predict</button>
-        </div>
+	<!-- Banner -->
+	<section class="banner">
+		<article>
+			<img src="images/slide01.jpg" alt="" />
+			<div class="inner">
+				<header>
+					<p>A free responsive web site template by <a href="https://templated.co">TEMPLATED</a></p>
+					<h2>Hielo</h2>
+				</header>
+			</div>
+		</article>
+		<article>
+			<img src="images/slide02.jpg" alt="" />
+			<div class="inner">
+				<header>
+					<p>Lorem ipsum dolor sit amet nullam feugiat</p>
+					<h2>Magna etiam</h2>
+				</header>
+			</div>
+		</article>
+		<article>
+			<img src="images/slide03.jpg" alt="" />
+			<div class="inner">
+				<header>
+					<p>Sed cursus aliuam veroeros lorem ipsum nullam</p>
+					<h2>Tempus dolor</h2>
+				</header>
+			</div>
+		</article>
+		<article>
+			<img src="images/slide04.jpg" alt="" />
+			<div class="inner">
+				<header>
+					<p>Adipiscing lorem ipsum feugiat sed phasellus consequat</p>
+					<h2>Etiam feugiat</h2>
+				</header>
+			</div>
+		</article>
+		<article>
+			<img src="images/slide05.jpg" alt="" />
+			<div class="inner">
+				<header>
+					<p>Ipsum dolor sed magna veroeros lorem ipsum</p>
+					<h2>Lorem adipiscing</h2>
+				</header>
+			</div>
+		</article>
+	</section>
 
-        <!-- print result -->
-        <div class="right-container">
-            <div id="label-container">이거는 이런 정보를 가지고 있어서 쏼라쏼라아르르르라다라갂</div>
-        </div>
-    </div>
+	<!-- Content -->
+	<section id="one" class="wrapper style2">
+		<div class="inner">
+			<div class="grid-style">
 
-    <!--
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
-    -->
-    <script type="text/javascript">
-        // More API functions here:
-        // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/image
-        // the link to your model provided by Teachable Machine export panel
-        const URL = "https://teachablemachine.withgoogle.com/models/loVFZUvDd/";
-        let model, labelContainer, maxPredictions;
-        // Load the image model and setup the webcam
-        async function init() {
-            const modelURL = URL + "model.json";
-            const metadataURL = URL + "metadata.json";
-            // load the model and metadata
-            // Refer to tmImage.loadFromFiles() in the API to support files from a file picker
-            // or files from your local hard drive
-            // Note: the pose library adds "tmImage" object to your window (window.tmImage)
-            model = await tmImage.load(modelURL, metadataURL);
-            maxPredictions = model.getTotalClasses();
-            labelContainer = document.getElementById("label-container");
-            for (let i = 0; i < maxPredictions; i++) { // and class labels
-                labelContainer.appendChild(document.createElement("div"));
-            }
-        }
-        // run the webcam image through the image model
-        async function predict() {
-            // predict can take in an image, video or canvas html element
-            var image = document.getElementById("face-image");
-            const prediction = await model.predict(image, false);
-            for (let i = 0; i < maxPredictions; i++) {
-                const classPrediction =
-                    prediction[i].className + ": " + prediction[i].probability.toFixed(2);
-                labelContainer.childNodes[i].innerHTML = classPrediction;
-            }
-        }
-    </script>
-    <script>
-        function readURL(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    $('.image-upload-wrap').hide();
-                    $('.file-upload-image').attr('src', e.target.result);
-                    $('.file-upload-content').show();
-                    $('.image-title').html(input.files[0].name);
-                };
-                reader.readAsDataURL(input.files[0]);
-            } else {
-                removeUpload();
-            }
-        }
 
-        function removeUpload() {
-            $('.file-upload-input').replaceWith($('.file-upload-input').clone());
-            $('.file-upload-content').hide();
-            $('.image-upload-wrap').show();
-        }
-        $('.image-upload-wrap').bind('dragover', function () {
-            $('.image-upload-wrap').addClass('image-dropping');
-        });
-        $('.image-upload-wrap').bind('dragleave', function () {
-            $('.image-upload-wrap').removeClass('image-dropping');
-        });
-    </script>
+
+
+				<div class="box">
+					<div class="content">
+						<div class="image-upload-wrap">
+
+							<div class="align-center">
+								<div class="file-upload-init">
+									<input class="file-upload-input" type='file' onchange="readURL(this);"
+										accept="image/*" />
+									<img class="floating-img" src="images/upload.svg" alt="" />
+									<h2>Drag & drop a file <br>Or Select Add Image</h2>
+									<p></p>
+								</div>
+								<div class="file-upload-content">
+									<img class="file-upload-image" id="face-image" src="#" alt="your image" />
+									<div class="image-title-wrap">
+										<button type="button" onclick="removeUpload()" class="remove-image">Remove
+											<span class="image-title">Uploaded Image</span>
+										</button>
+									</div>
+								</div>
+							</div>
+
+
+							<div class="align-center">
+								<footer class=" button alt file-upload-btn"
+									onclick="$('.file-upload-input').trigger('click')">Add Image
+								</footer>
+
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div>
+					<div class="box">
+						<div class="image fit">
+							<img src="" alt="" />
+						</div>
+						<div class="content">
+							<header class="align-center">
+								<p>뭐뭠뭐 카테고리 거기. 디폴트값 설정필요</p>
+								<h2>병충해이름 나올 곳. 디폴트값 설정필요</h2>
+							</header>
+							<p> 업로드 된 병충해 사진을 기반으로 인공지능이 (대충 어떻게 잘 탐색한다는 말을 있어보이게) 보여줍니다!</p>
+							<p></p>
+							<p></p>
+						</div>
+					</div>
+				</div>
+
+
+
+			</div>
+		</div>
+	</section>
+
+	<!-- Footer -->
+	<footer id="footer">
+		<div class="container">
+			김경남, 박수연, 이민정, 이화정, 이혜은
+		</div>
+		<div class="copyright">
+			&copy; 4조 Ladybug🐞. All rights reserved.
+		</div>
+	</footer>
+
+	<!-- Scripts -->
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/jquery.scrollex.min.js"></script>
+	<script src="assets/js/skel.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<script src="assets/js/main.js"></script>
+	<script src="assets/js/index.js"></script>
+
 </body>
-
-<!-- Copyright (c) 2020 by Aaron Vanston (https://codepen.io/aaronvanston/pen/yNYOXR)
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
 
 </html>
