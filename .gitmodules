@@ -1,0 +1,3 @@
+[submodule "Image-Crawler"]
+	path = Image-Crawler
+	url = https://github.com/study-ai-data/Image-Crawler
